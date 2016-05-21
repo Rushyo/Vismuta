@@ -66,9 +66,8 @@ namespace VismutaLib
                     }
                 }
 
+                //MAC | IV | CIPHERTEXT
                 Byte[] ciphertextWithIV = aes.IV.Concat(ciphertext).ToArray();
-
-
                 using (var hmac = new HMACSHA512(key))
                 {
                     Byte[] hash = hmac.ComputeHash(ciphertext);
