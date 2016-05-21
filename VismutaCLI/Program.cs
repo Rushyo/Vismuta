@@ -35,13 +35,19 @@ namespace VismutaCLI
             [Option('x', "obfuscate", DefaultValue = false, HelpText="Obfuscate payload filename")]
             public Boolean Obfuscate { get; set; }
 
+            [Option('k', "keyphrase", DefaultValue = null, HelpText = "Encryption keyphrase (enables AES256 encryption)")]
+            public String Keyphrase { get; set; }
+
             [Option('l', "about", DefaultValue = false, HelpText = "Provides info about the application and licenses")]
             public Boolean ShowAbout { get; set; }
 
             [HelpOption]
             public String GetUsage()
             {
-                return HelpText.AutoBuild(this, current => HelpText.DefaultParsingErrorsHandler(this, current));
+                String usage = HelpText.AutoBuild(this, current => HelpText.DefaultParsingErrorsHandler(this, current));
+                usage += Environment.NewLine + Environment.NewLine + "When using encryption, you need to run the following code on the target system first:";
+                usage += Environment.NewLine + "$inputkey = Read-Host -Prompt 'Enter Keyphrase' -AsSecureString;";
+                return usage;
             }
         }
 
@@ -75,6 +81,8 @@ namespace VismutaCLI
                         flags |= DeployMethodFlags.Inject;
                     if(options.Obfuscate)
                         flags |= DeployMethodFlags.ObfuscateName;
+                    if(options.Keyphrase != null)
+                        flags |= DeployMethodFlags.EncryptPayload;
 
                     if(!Vismuta.IsValidDeployMethod(flags))
                     { 
@@ -86,7 +94,7 @@ namespace VismutaCLI
                     Byte[] srcBinary = File.ReadAllBytes(options.PayloadPath);
                     String payloadName = Path.GetFileNameWithoutExtension(options.PayloadPath);
                     String payloadExt = Path.GetExtension(options.PayloadPath);
-                    String dstShell = Vismuta.Muta(flags, srcBinary, payloadName, payloadExt, options.PayloadArgs);
+                    String dstShell = Vismuta.Muta(flags, srcBinary, payloadName, payloadExt, options.PayloadArgs, options.Keyphrase);
                     if (String.IsNullOrWhiteSpace(options.OutputPath))
                     {
                         Console.WriteLine(dstShell);

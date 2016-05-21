@@ -48,12 +48,17 @@ namespace VismutaGUI
             this.chkExecAsSystem = new System.Windows.Forms.CheckBox();
             this.chkInject = new System.Windows.Forms.CheckBox();
             this.chkObfuscateName = new System.Windows.Forms.CheckBox();
+            this.chkEncryptPayload = new System.Windows.Forms.CheckBox();
+            this.txtKeyphrase = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtRunFirst = new System.Windows.Forms.TextBox();
+            this.lblRunFirst = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // cmdMuta
             // 
             this.cmdMuta.Enabled = false;
-            this.cmdMuta.Location = new System.Drawing.Point(12, 64);
+            this.cmdMuta.Location = new System.Drawing.Point(12, 105);
             this.cmdMuta.Name = "cmdMuta";
             this.cmdMuta.Size = new System.Drawing.Size(363, 23);
             this.cmdMuta.TabIndex = 0;
@@ -81,7 +86,7 @@ namespace VismutaGUI
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 112);
+            this.label3.Location = new System.Drawing.Point(12, 209);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(39, 13);
             this.label3.TabIndex = 7;
@@ -90,7 +95,7 @@ namespace VismutaGUI
             // cmdCopyDstShell
             // 
             this.cmdCopyDstShell.Enabled = false;
-            this.cmdCopyDstShell.Location = new System.Drawing.Point(12, 244);
+            this.cmdCopyDstShell.Location = new System.Drawing.Point(12, 334);
             this.cmdCopyDstShell.Name = "cmdCopyDstShell";
             this.cmdCopyDstShell.Size = new System.Drawing.Size(596, 23);
             this.cmdCopyDstShell.TabIndex = 8;
@@ -110,18 +115,19 @@ namespace VismutaGUI
             // 
             // txtDstShell
             // 
-            this.txtDstShell.BackColor = System.Drawing.Color.Teal;
+            this.txtDstShell.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(36)))), ((int)(((byte)(86)))));
+            this.txtDstShell.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDstShell.ForeColor = System.Drawing.Color.White;
-            this.txtDstShell.Location = new System.Drawing.Point(12, 128);
+            this.txtDstShell.Location = new System.Drawing.Point(12, 225);
             this.txtDstShell.Name = "txtDstShell";
-            this.txtDstShell.Size = new System.Drawing.Size(596, 110);
+            this.txtDstShell.Size = new System.Drawing.Size(596, 103);
             this.txtDstShell.TabIndex = 10;
             this.txtDstShell.Text = "";
             // 
             // lblUsage
             // 
             this.lblUsage.AutoSize = true;
-            this.lblUsage.Location = new System.Drawing.Point(12, 90);
+            this.lblUsage.Location = new System.Drawing.Point(12, 146);
             this.lblUsage.Name = "lblUsage";
             this.lblUsage.Size = new System.Drawing.Size(16, 13);
             this.lblUsage.TabIndex = 14;
@@ -145,7 +151,7 @@ namespace VismutaGUI
             // 
             // cmdAbout
             // 
-            this.cmdAbout.Location = new System.Drawing.Point(614, 244);
+            this.cmdAbout.Location = new System.Drawing.Point(614, 334);
             this.cmdAbout.Name = "cmdAbout";
             this.cmdAbout.Size = new System.Drawing.Size(75, 23);
             this.cmdAbout.TabIndex = 18;
@@ -180,7 +186,7 @@ namespace VismutaGUI
             this.chkInject.AutoSize = true;
             this.chkInject.Location = new System.Drawing.Point(381, 64);
             this.chkInject.Name = "chkInject";
-            this.chkInject.Size = new System.Drawing.Size(271, 17);
+            this.chkInject.Size = new System.Drawing.Size(270, 17);
             this.chkInject.TabIndex = 21;
             this.chkInject.Text = global::VismutaGUI.Properties.Resources.frmMain_UseInjection;
             this.chkInject.UseVisualStyleBackColor = true;
@@ -197,11 +203,66 @@ namespace VismutaGUI
             this.chkObfuscateName.UseVisualStyleBackColor = true;
             this.chkObfuscateName.CheckedChanged += new System.EventHandler(this.chkObfuscateName_CheckedChanged);
             // 
+            // chkEncryptPayload
+            // 
+            this.chkEncryptPayload.AutoSize = true;
+            this.chkEncryptPayload.Location = new System.Drawing.Point(381, 111);
+            this.chkEncryptPayload.Name = "chkEncryptPayload";
+            this.chkEncryptPayload.Size = new System.Drawing.Size(103, 17);
+            this.chkEncryptPayload.TabIndex = 23;
+            this.chkEncryptPayload.Text = "Encrypt Payload";
+            this.chkEncryptPayload.UseVisualStyleBackColor = true;
+            this.chkEncryptPayload.CheckedChanged += new System.EventHandler(this.chkEncryptPayload_CheckedChanged);
+            // 
+            // txtKeyphrase
+            // 
+            this.txtKeyphrase.Enabled = false;
+            this.txtKeyphrase.Location = new System.Drawing.Point(116, 65);
+            this.txtKeyphrase.Name = "txtKeyphrase";
+            this.txtKeyphrase.Size = new System.Drawing.Size(258, 20);
+            this.txtKeyphrase.TabIndex = 25;
+            this.txtKeyphrase.TextChanged += new System.EventHandler(this.txtKeyphrase_TextChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 68);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(57, 13);
+            this.label2.TabIndex = 24;
+            this.label2.Text = "Keyphrase";
+            // 
+            // txtRunFirst
+            // 
+            this.txtRunFirst.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(36)))), ((int)(((byte)(86)))));
+            this.txtRunFirst.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtRunFirst.ForeColor = System.Drawing.Color.White;
+            this.txtRunFirst.Location = new System.Drawing.Point(12, 186);
+            this.txtRunFirst.Name = "txtRunFirst";
+            this.txtRunFirst.Size = new System.Drawing.Size(596, 22);
+            this.txtRunFirst.TabIndex = 26;
+            this.txtRunFirst.Visible = false;
+            // 
+            // lblRunFirst
+            // 
+            this.lblRunFirst.AutoSize = true;
+            this.lblRunFirst.Location = new System.Drawing.Point(12, 170);
+            this.lblRunFirst.Name = "lblRunFirst";
+            this.lblRunFirst.Size = new System.Drawing.Size(89, 13);
+            this.lblRunFirst.TabIndex = 27;
+            this.lblRunFirst.Text = "Copy and run first";
+            this.lblRunFirst.Visible = false;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(695, 276);
+            this.ClientSize = new System.Drawing.Size(695, 422);
+            this.Controls.Add(this.lblRunFirst);
+            this.Controls.Add(this.txtRunFirst);
+            this.Controls.Add(this.txtKeyphrase);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.chkEncryptPayload);
             this.Controls.Add(this.chkObfuscateName);
             this.Controls.Add(this.chkInject);
             this.Controls.Add(this.chkExecAsSystem);
@@ -244,6 +305,11 @@ namespace VismutaGUI
         private System.Windows.Forms.CheckBox chkExecAsSystem;
         private System.Windows.Forms.CheckBox chkInject;
         private CheckBox chkObfuscateName;
+        private CheckBox chkEncryptPayload;
+        private TextBox txtKeyphrase;
+        private Label label2;
+        private TextBox txtRunFirst;
+        private Label lblRunFirst;
     }
 }
 
