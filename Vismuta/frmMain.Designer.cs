@@ -208,9 +208,9 @@ namespace VismutaGUI
             this.chkEncryptPayload.AutoSize = true;
             this.chkEncryptPayload.Location = new System.Drawing.Point(381, 111);
             this.chkEncryptPayload.Name = "chkEncryptPayload";
-            this.chkEncryptPayload.Size = new System.Drawing.Size(103, 17);
+            this.chkEncryptPayload.Size = new System.Drawing.Size(102, 17);
             this.chkEncryptPayload.TabIndex = 23;
-            this.chkEncryptPayload.Text = "Encrypt Payload";
+            this.chkEncryptPayload.Text = "Encrypt payload";
             this.chkEncryptPayload.UseVisualStyleBackColor = true;
             this.chkEncryptPayload.CheckedChanged += new System.EventHandler(this.chkEncryptPayload_CheckedChanged);
             // 
@@ -248,16 +248,17 @@ namespace VismutaGUI
             this.lblRunFirst.AutoSize = true;
             this.lblRunFirst.Location = new System.Drawing.Point(12, 170);
             this.lblRunFirst.Name = "lblRunFirst";
-            this.lblRunFirst.Size = new System.Drawing.Size(89, 13);
+            this.lblRunFirst.Size = new System.Drawing.Size(425, 13);
             this.lblRunFirst.TabIndex = 27;
-            this.lblRunFirst.Text = "Copy and run first";
+            this.lblRunFirst.Text = "Copy and run this FIRST, then either copy or type the keyphrase (Typing is more s" +
+    "ecure!)";
             this.lblRunFirst.Visible = false;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(695, 422);
+            this.ClientSize = new System.Drawing.Size(695, 364);
             this.Controls.Add(this.lblRunFirst);
             this.Controls.Add(this.txtRunFirst);
             this.Controls.Add(this.txtKeyphrase);
@@ -281,7 +282,7 @@ namespace VismutaGUI
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "frmMain";
-            this.Text = "Microsoft® Visual Studio® 2015";
+            this.Text = "Vismuta";
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

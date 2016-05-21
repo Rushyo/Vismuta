@@ -1,4 +1,6 @@
-$keyphrase = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($inputkey));
+[bool] $invalid = $False;
+$invalidTest = "If (`$invalid) { echo `"**************************** TAMPERED PAYLOAD OR INVALID KEY ****************************`"; }"
+[string] $keyphrase = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($inputkey));
 [byte[]] $sds = 0xbc, 0x64, 0xba, 0xb0, 0x31, 0x63, 0xee, 0x30, 0x2a, 0xdf, 0xc0, 0x1b, 0x51, 0xae, 0x71, 0x99, 0x79, 0xbf, 0xf5, 0x18, 0x9a, 0x36, 0x8a, 0x56, 0x18, 0x3b, 0x29, 0xb4, 0xcf, 0xdc, 0x3c, 0x86;
 [byte[]] $keybytes = [System.Text.UTF8Encoding]::UTF8.GetBytes($keyphrase);
 [byte[]] $saltedkey = New-Object Byte[] (32 + $keybytes.Length);
@@ -17,8 +19,8 @@ $hashalg = [System.Security.Cryptography.SHA256]::Create();
 [System.Array]::Copy($payload, 64, $aead, 0, $payload.Length - 64);
 
 $hmac = New-Object -TypeName System.Security.Cryptography.HMACSHA512 (, $key);
-$computed = $hmac.ComputeHash($aead);
-If ((diff $hash $computed).Length) { $aead = New-Object Byte[] 0; };
+[byte[]] $computed = $hmac.ComputeHash($aead);
+If ((diff $hash $computed).Length) { $aead = New-Object Byte[] 0; $invalid = $True; };
 
 [System.Array]::Copy($aead, 0, $iv, 0, 16);
 [System.Array]::Copy($aead, 16, $ciphertext, 0, $aead.Length - 16);
@@ -35,10 +37,14 @@ $decryptor = $aes.CreateDecryptor();
 $memoryStream = New-Object -Type System.IO.MemoryStream (, $ciphertext);
 $csm = [System.Security.Cryptography.CryptoStreamMode]::Read;
 $cryptoStream = New-Object -Type System.Security.Cryptography.CryptoStream -ArgumentList $memoryStream,$decryptor,$csm;
-$binaryReader  = New-Object -Type System.IO.BinaryReader ($cryptoStream);
+$binaryReader = New-Object -Type System.IO.BinaryReader ($cryptoStream);
 $memoryStream.Position = 0;
-$payload = $binaryReader.ReadBytes($memoryStream.Length);
+[byte[]] $payload = $binaryReader.ReadBytes($memoryStream.Length);
+$binaryReader.Close()
+$cryptoStream.Close()
+$memoryStream.Close()
 $keyphrase = 0;
 $keybytes = 0;
 $saltedkey = 0;
 $key = 0;
+iex $invalidTest;
