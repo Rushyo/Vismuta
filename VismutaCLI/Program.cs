@@ -105,7 +105,6 @@ namespace VismutaCLI
                     return;
                 }
             }
-            Console.ReadKey();
         }
 
 
