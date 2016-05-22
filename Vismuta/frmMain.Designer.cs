@@ -60,6 +60,7 @@ namespace VismutaGUI
             // cmdMuta
             // 
             this.cmdMuta.Enabled = false;
+            this.cmdMuta.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.cmdMuta.Location = new System.Drawing.Point(12, 105);
             this.cmdMuta.Name = "cmdMuta";
             this.cmdMuta.Size = new System.Drawing.Size(363, 23);
@@ -83,7 +84,7 @@ namespace VismutaGUI
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(72, 13);
             this.label1.TabIndex = 2;
-            this.label1.Text = Resources.frmMain_PayloadFiles;
+            this.label1.Text = "Payload file(s)";
             // 
             // label3
             // 
@@ -92,14 +93,15 @@ namespace VismutaGUI
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(39, 13);
             this.label3.TabIndex = 7;
-            this.label3.Text = Resources.frmMain_OutputLabel;
+            this.label3.Text = "Output";
             // 
             // cmdCopyDstShell
             // 
             this.cmdCopyDstShell.Enabled = false;
+            this.cmdCopyDstShell.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmdCopyDstShell.Location = new System.Drawing.Point(12, 334);
             this.cmdCopyDstShell.Name = "cmdCopyDstShell";
-            this.cmdCopyDstShell.Size = new System.Drawing.Size(454, 23);
+            this.cmdCopyDstShell.Size = new System.Drawing.Size(500, 23);
             this.cmdCopyDstShell.TabIndex = 8;
             this.cmdCopyDstShell.Text = global::VismutaGUI.Properties.Resources.frmMain_CopyToClipboard;
             this.cmdCopyDstShell.UseVisualStyleBackColor = true;
@@ -107,6 +109,7 @@ namespace VismutaGUI
             // 
             // cmdChooseSrc
             // 
+            this.cmdChooseSrc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmdChooseSrc.Location = new System.Drawing.Point(349, 9);
             this.cmdChooseSrc.Name = "cmdChooseSrc";
             this.cmdChooseSrc.Size = new System.Drawing.Size(26, 23);
@@ -118,11 +121,12 @@ namespace VismutaGUI
             // txtDstShell
             // 
             this.txtDstShell.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(36)))), ((int)(((byte)(86)))));
+            this.txtDstShell.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtDstShell.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDstShell.ForeColor = System.Drawing.Color.White;
             this.txtDstShell.Location = new System.Drawing.Point(12, 225);
             this.txtDstShell.Name = "txtDstShell";
-            this.txtDstShell.Size = new System.Drawing.Size(454, 103);
+            this.txtDstShell.Size = new System.Drawing.Size(500, 103);
             this.txtDstShell.TabIndex = 10;
             this.txtDstShell.Text = "";
             // 
@@ -142,7 +146,7 @@ namespace VismutaGUI
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(97, 13);
             this.label4.TabIndex = 16;
-            this.label4.Text = Resources.frmMain_PayloadArguments;
+            this.label4.Text = "Payload arguments";
             // 
             // txtArgs
             // 
@@ -153,9 +157,10 @@ namespace VismutaGUI
             // 
             // cmdAbout
             // 
-            this.cmdAbout.Location = new System.Drawing.Point(472, 334);
+            this.cmdAbout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmdAbout.Location = new System.Drawing.Point(518, 334);
             this.cmdAbout.Name = "cmdAbout";
-            this.cmdAbout.Size = new System.Drawing.Size(217, 23);
+            this.cmdAbout.Size = new System.Drawing.Size(171, 23);
             this.cmdAbout.TabIndex = 18;
             this.cmdAbout.Text = global::VismutaGUI.Properties.Resources.frmMain_About;
             this.cmdAbout.UseVisualStyleBackColor = true;
@@ -164,31 +169,34 @@ namespace VismutaGUI
             // chkRunAfterDeploy
             // 
             this.chkRunAfterDeploy.AutoSize = true;
+            this.chkRunAfterDeploy.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.chkRunAfterDeploy.Location = new System.Drawing.Point(381, 13);
             this.chkRunAfterDeploy.Name = "chkRunAfterDeploy";
-            this.chkRunAfterDeploy.Size = new System.Drawing.Size(104, 17);
+            this.chkRunAfterDeploy.Size = new System.Drawing.Size(102, 17);
             this.chkRunAfterDeploy.TabIndex = 19;
-            this.chkRunAfterDeploy.Text = Resources.frmMain_RunAfterDeploy;
+            this.chkRunAfterDeploy.Text = global::VismutaGUI.Properties.Resources.frmMain_RunAfterDeploy;
             this.chkRunAfterDeploy.UseVisualStyleBackColor = true;
             this.chkRunAfterDeploy.CheckedChanged += new System.EventHandler(this.chkRunAfterDeploy_CheckedChanged);
             // 
             // chkExecAsSystem
             // 
             this.chkExecAsSystem.AutoSize = true;
+            this.chkExecAsSystem.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.chkExecAsSystem.Location = new System.Drawing.Point(381, 40);
             this.chkExecAsSystem.Name = "chkExecAsSystem";
-            this.chkExecAsSystem.Size = new System.Drawing.Size(242, 17);
+            this.chkExecAsSystem.Size = new System.Drawing.Size(240, 17);
             this.chkExecAsSystem.TabIndex = 20;
-            this.chkExecAsSystem.Text = Resources.frmMain_ExecuteAsSystem;
+            this.chkExecAsSystem.Text = global::VismutaGUI.Properties.Resources.frmMain_ExecuteAsSystem;
             this.chkExecAsSystem.UseVisualStyleBackColor = true;
             this.chkExecAsSystem.CheckedChanged += new System.EventHandler(this.chkExecAsSystem_CheckedChanged);
             // 
             // chkInject
             // 
             this.chkInject.AutoSize = true;
+            this.chkInject.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.chkInject.Location = new System.Drawing.Point(381, 64);
             this.chkInject.Name = "chkInject";
-            this.chkInject.Size = new System.Drawing.Size(270, 17);
+            this.chkInject.Size = new System.Drawing.Size(268, 17);
             this.chkInject.TabIndex = 21;
             this.chkInject.Text = global::VismutaGUI.Properties.Resources.frmMain_UseInjection;
             this.chkInject.UseVisualStyleBackColor = true;
@@ -197,22 +205,24 @@ namespace VismutaGUI
             // chkObfuscateName
             // 
             this.chkObfuscateName.AutoSize = true;
+            this.chkObfuscateName.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.chkObfuscateName.Location = new System.Drawing.Point(381, 88);
             this.chkObfuscateName.Name = "chkObfuscateName";
-            this.chkObfuscateName.Size = new System.Drawing.Size(144, 17);
+            this.chkObfuscateName.Size = new System.Drawing.Size(142, 17);
             this.chkObfuscateName.TabIndex = 22;
-            this.chkObfuscateName.Text = Resources.frmMain_ObfuscatePayloadName;
+            this.chkObfuscateName.Text = global::VismutaGUI.Properties.Resources.frmMain_ObfuscatePayloadName;
             this.chkObfuscateName.UseVisualStyleBackColor = true;
             this.chkObfuscateName.CheckedChanged += new System.EventHandler(this.chkObfuscateName_CheckedChanged);
             // 
             // chkEncryptPayload
             // 
             this.chkEncryptPayload.AutoSize = true;
+            this.chkEncryptPayload.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.chkEncryptPayload.Location = new System.Drawing.Point(381, 111);
             this.chkEncryptPayload.Name = "chkEncryptPayload";
-            this.chkEncryptPayload.Size = new System.Drawing.Size(102, 17);
+            this.chkEncryptPayload.Size = new System.Drawing.Size(159, 17);
             this.chkEncryptPayload.TabIndex = 23;
-            this.chkEncryptPayload.Text = Resources.frmMain_EncryptPayloadInteractive;
+            this.chkEncryptPayload.Text = global::VismutaGUI.Properties.Resources.frmMain_EncryptPayloadInteractive;
             this.chkEncryptPayload.UseVisualStyleBackColor = true;
             this.chkEncryptPayload.CheckedChanged += new System.EventHandler(this.chkEncryptPayload_CheckedChanged);
             // 
@@ -232,16 +242,17 @@ namespace VismutaGUI
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(57, 13);
             this.label2.TabIndex = 24;
-            this.label2.Text = Resources.frmMain_Keyphrase;
+            this.label2.Text = "Keyphrase";
             // 
             // txtRunFirst
             // 
             this.txtRunFirst.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(36)))), ((int)(((byte)(86)))));
+            this.txtRunFirst.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtRunFirst.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtRunFirst.ForeColor = System.Drawing.Color.White;
             this.txtRunFirst.Location = new System.Drawing.Point(12, 186);
             this.txtRunFirst.Name = "txtRunFirst";
-            this.txtRunFirst.Size = new System.Drawing.Size(454, 22);
+            this.txtRunFirst.Size = new System.Drawing.Size(500, 15);
             this.txtRunFirst.TabIndex = 26;
             this.txtRunFirst.Visible = false;
             // 
@@ -252,16 +263,17 @@ namespace VismutaGUI
             this.lblRunFirst.Name = "lblRunFirst";
             this.lblRunFirst.Size = new System.Drawing.Size(425, 13);
             this.lblRunFirst.TabIndex = 27;
-            this.lblRunFirst.Text = Resources.frmMain_RunFirstLabel;
+            this.lblRunFirst.Text = "Copy and run this FIRST, then either copy or type the keyphrase (Typing is more s" +
+    "ecure!)";
             this.lblRunFirst.Visible = false;
             // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::VismutaGUI.Properties.Resources.vismutaicon;
             this.pictureBox1.InitialImage = null;
-            this.pictureBox1.Location = new System.Drawing.Point(472, 197);
+            this.pictureBox1.Location = new System.Drawing.Point(518, 225);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(217, 131);
+            this.pictureBox1.Size = new System.Drawing.Size(171, 103);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 28;
             this.pictureBox1.TabStop = false;
@@ -270,6 +282,7 @@ namespace VismutaGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.LightSteelBlue;
             this.ClientSize = new System.Drawing.Size(695, 364);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lblRunFirst);
