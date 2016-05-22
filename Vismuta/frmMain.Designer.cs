@@ -305,6 +305,7 @@ namespace VismutaGUI
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtSrcPath);
             this.Controls.Add(this.cmdMuta);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "frmMain";
