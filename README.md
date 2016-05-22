@@ -20,7 +20,7 @@ Vismuta bypasses all these limitations, requiring only the ability to copy and p
 
 Vismuta, at its most basic, simply encodes your files in Base64 on your local system then de-encodes them, using the generated PowerShell script, on the remote system.
 
-It can also zip multiple files and automatically unzip them (presently GUI only), run a single file as SYSTEM automatically using a built-in copy of PSExec, or inject your code directly in to the memory of the PowerShell process to avoid touching disk (NOTE: experimental and VERY dangerous). In the future you'll be able to encrypt a payload, to avoid the payload being detected by a particular aggressive IDS.
+It can also zip multiple files and automatically unzip them (presently GUI only), run a single file as SYSTEM automatically using a built-in copy of PSExec, or inject your code directly in to the memory of the PowerShell process to avoid touching disk (NOTE: experimental and VERY dangerous). You can even encrypt a payload, to avoid the payload being detected by a particular aggressive IDS.
 
 ### Example
 
