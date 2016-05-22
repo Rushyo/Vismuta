@@ -97,6 +97,24 @@ namespace VismutaGUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Encrypt payload (Interactive).
+        /// </summary>
+        internal static string frmMain_EncryptPayloadInteractive {
+            get {
+                return ResourceManager.GetString("frmMain_EncryptPayloadInteractive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Encrypt payload (Non-Interactive).
+        /// </summary>
+        internal static string frmMain_EncryptPayloadNonInteractive {
+            get {
+                return ResourceManager.GetString("frmMain_EncryptPayloadNonInteractive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exception when trying to read source file.
         /// </summary>
         internal static string frmMain_ExceptionWhenReadingSourceFile {
@@ -142,6 +160,15 @@ namespace VismutaGUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Keyphrase.
+        /// </summary>
+        internal static string frmMain_Keyphrase {
+            get {
+                return ResourceManager.GetString("frmMain_Keyphrase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Multiple sources selected.
         /// </summary>
         internal static string frmMain_MultipleSourcesSelected {
@@ -151,7 +178,7 @@ namespace VismutaGUI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Obfsucate payload name.
+        ///   Looks up a localized string similar to Obfuscate payload name.
         /// </summary>
         internal static string frmMain_ObfuscatePayloadName {
             get {
@@ -196,6 +223,15 @@ namespace VismutaGUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy and run this FIRST, then either copy or type the keyphrase (Typing is more secure!).
+        /// </summary>
+        internal static string frmMain_RunFirstLabel {
+            get {
+                return ResourceManager.GetString("frmMain_RunFirstLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Source file could not be found.
         /// </summary>
         internal static string frmMain_SourceFileNotFound {
@@ -219,6 +255,16 @@ namespace VismutaGUI.Properties {
         internal static string frmMain_UseInjection {
             get {
                 return ResourceManager.GetString("frmMain_UseInjection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap vismutaicon {
+            get {
+                object obj = ResourceManager.GetObject("vismutaicon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }
