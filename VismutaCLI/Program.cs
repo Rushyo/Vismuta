@@ -61,10 +61,7 @@ namespace VismutaCLI
         {
             var options = new Options();
             if (!Parser.Default.ParseArguments(args, options))
-            {
-                Console.WriteLine(options.GetUsage());
                 return;
-            }
 
             if (options.ShowAbout)
             { 

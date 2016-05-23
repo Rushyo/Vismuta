@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Danny 'Rushyo' Moules")]
 [assembly: AssemblyProduct("VismutaCLI")]
-[assembly: AssemblyCopyright("Copyright © Danny Mouls 2016")]
+[assembly: AssemblyCopyright("Copyright © Danny Moules 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
