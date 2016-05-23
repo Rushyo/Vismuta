@@ -72,7 +72,7 @@ Star it! This lets me know whether I should continue to work on it beyond my own
 
 ## Roadmap
 
-I need to bring the CLI version in to parity with the GUI version, and clean up the zip UX path. The encryption deploy method ought to have a less secure but more UX friendly non-interactive mode. I also need to add unit tests (!)
+I need to bring the CLI version in to parity with the GUI version, and clean up the zip UX path. I also need to add more unit tests (!)
 
 ## Disclaimer
 
