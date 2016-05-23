@@ -9,7 +9,7 @@ namespace VismutaLib
 {
     internal static class Encryption
     {
-        private static readonly Byte[] StaticDerivationSalt =
+        internal static readonly Byte[] StaticDerivationSalt =
         {
             0xbc, 0x64, 0xba, 0xb0, 0x31, 0x63, 0xee, 0x30
             , 0x2a, 0xdf, 0xc0, 0x1b, 0x51, 0xae, 0x71, 0x99,
@@ -41,6 +41,17 @@ namespace VismutaLib
         [Pure]
         public static Byte[] AES256Encrypt(Byte[] plaintext, Byte[] key)
         {
+            Byte[] iv = new Byte[16];
+            using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
+                rng.GetBytes(iv);
+            return AES256Encrypt(plaintext, key, iv);
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage",
+            "CA2202:Do not dispose objects multiple times")]
+        [Pure]
+        internal static Byte[] AES256Encrypt(Byte[] plaintext, Byte[] key, Byte[] iv)
+        {
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
             if (key.Length != 32)
@@ -49,6 +60,14 @@ namespace VismutaLib
                 throw new ArgumentNullException(nameof(plaintext));
             if (plaintext.Length == 0)
                 throw new ArgumentException(nameof(plaintext));
+            if(iv == null)
+                throw new ArgumentNullException(nameof(iv));
+            if(iv.Length != 16)
+                throw new ArgumentException(@"IV length invalid", nameof(iv));
+            if(key.All(b => b == 0))
+                throw new ArgumentException(@"Key is not initialised");
+            if (iv.All(b => b == 0))
+                throw new ArgumentException(@"IV is not initialised");
 
 
             using (var aes = new AesManaged())
@@ -60,10 +79,7 @@ namespace VismutaLib
                 aes.BlockSize = 128;
 
                 //Must occur after other properties are set
-                if (FixedIV == null)
-                    aes.GenerateIV();
-                else
-                    aes.IV = FixedIV;
+                aes.IV = iv;
                 aes.Key = key;
 
                 Byte[] ciphertext;

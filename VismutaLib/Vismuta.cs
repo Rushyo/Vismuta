@@ -9,6 +9,7 @@ namespace VismutaLib
 {
     public class Vismuta
     {
+        private const Int32 ChunkSize = 4096; //This is a sweet spot between speed (larger is better) and reliability (much more and PS hurls)
         public const String CRLF = "\r\n"; //Always use target environment (PS) line breaks rather than calling environment
         private static readonly Random Random = new Random();
         public const Int32 ZipStrength = 9; //0-9
@@ -138,14 +139,18 @@ namespace VismutaLib
             return dstShell;
         }
 
-        //NOTE: Doesn't work with non-alphanumeric variable names
-        [Pure]
         private static String ObfuscatePSVariables(String shellText, String keyphraseVariable)
+        {
+            return ObfuscatePSVariables(shellText, keyphraseVariable, Random);
+        }
+
+        //NOTE: Doesn't work with non-alphanumeric variable names
+        internal static String ObfuscatePSVariables(String shellText, String keyphraseVariable, Random random)
         {
             var regex = new Regex("\\$[a-zA-Z0-9_]+");
             var matches = regex.Matches(shellText).OfType<Match>().Select(m => m.Value);
             foreach (String var in matches.Distinct().Where(m => m != "$True" && m != "$False"))
-                shellText = shellText.Replace(var, var == "$inputkey" ? keyphraseVariable : "$" + GetRandomString(8, false));
+                shellText = shellText.Replace(var, var == "$inputkey" ? keyphraseVariable : "$" + GetRandomString(8, false, random));
             return shellText;
         }
 
@@ -173,19 +178,23 @@ namespace VismutaLib
 
         public static String GetRandomString(Int32 length, Boolean onlyLowercase)
         {
+            return GetRandomString(length, onlyLowercase, Random);
+        }
+
+        internal static String GetRandomString(Int32 length, Boolean onlyLowercase, Random random)
+        {
             const String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
             const String lowercase = "abcdefghijklmnopqrstuvwxyz";
-            return new String(Enumerable.Repeat(onlyLowercase ? lowercase : chars, length).Select(s => s[Random.Next(s.Length)]).ToArray());
+            return new String(Enumerable.Repeat(onlyLowercase ? lowercase : chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
         [Pure]
-        private static IEnumerable<String> ChunkString(String input)
+        internal static IEnumerable<String> ChunkString(String input)
         {
-            const Int32 chunkSize = 4096; //This is a sweet spot between speed (larger is better) and reliability (much more and PS hurls)
             Int32 curLoc = 0;
             while (curLoc < input.Length)
             {
-                Int32 take = Math.Min(chunkSize, input.Length - curLoc);
+                Int32 take = Math.Min(ChunkSize, input.Length - curLoc);
                 String execChunk = new String(input.Skip(curLoc).Take(take).ToArray());
                 yield return execChunk;
                 curLoc += take;
