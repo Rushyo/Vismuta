@@ -48,13 +48,14 @@ namespace VismutaGUI
             this.chkExecAsSystem = new System.Windows.Forms.CheckBox();
             this.chkInject = new System.Windows.Forms.CheckBox();
             this.chkObfuscateName = new System.Windows.Forms.CheckBox();
-            this.chkEncryptPayload = new System.Windows.Forms.CheckBox();
+            this.chkEncryptInteractive = new System.Windows.Forms.CheckBox();
             this.txtKeyphrase = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtRunFirst = new System.Windows.Forms.TextBox();
             this.lblRunFirst = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.chkObfuscateVariables = new System.Windows.Forms.CheckBox();
+            this.chkEncryptNonInteractive = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -90,7 +91,7 @@ namespace VismutaGUI
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 209);
+            this.label3.Location = new System.Drawing.Point(9, 225);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(39, 13);
             this.label3.TabIndex = 7;
@@ -100,7 +101,7 @@ namespace VismutaGUI
             // 
             this.cmdCopyDstShell.Enabled = false;
             this.cmdCopyDstShell.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmdCopyDstShell.Location = new System.Drawing.Point(12, 334);
+            this.cmdCopyDstShell.Location = new System.Drawing.Point(9, 350);
             this.cmdCopyDstShell.Name = "cmdCopyDstShell";
             this.cmdCopyDstShell.Size = new System.Drawing.Size(500, 23);
             this.cmdCopyDstShell.TabIndex = 8;
@@ -125,7 +126,7 @@ namespace VismutaGUI
             this.txtDstShell.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtDstShell.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDstShell.ForeColor = System.Drawing.Color.White;
-            this.txtDstShell.Location = new System.Drawing.Point(12, 225);
+            this.txtDstShell.Location = new System.Drawing.Point(9, 241);
             this.txtDstShell.Name = "txtDstShell";
             this.txtDstShell.Size = new System.Drawing.Size(500, 103);
             this.txtDstShell.TabIndex = 10;
@@ -159,7 +160,7 @@ namespace VismutaGUI
             // cmdAbout
             // 
             this.cmdAbout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmdAbout.Location = new System.Drawing.Point(518, 334);
+            this.cmdAbout.Location = new System.Drawing.Point(515, 350);
             this.cmdAbout.Name = "cmdAbout";
             this.cmdAbout.Size = new System.Drawing.Size(171, 23);
             this.cmdAbout.TabIndex = 18;
@@ -215,17 +216,17 @@ namespace VismutaGUI
             this.chkObfuscateName.UseVisualStyleBackColor = true;
             this.chkObfuscateName.CheckedChanged += new System.EventHandler(this.chkObfuscateName_CheckedChanged);
             // 
-            // chkEncryptPayload
+            // chkEncryptInteractive
             // 
-            this.chkEncryptPayload.AutoSize = true;
-            this.chkEncryptPayload.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.chkEncryptPayload.Location = new System.Drawing.Point(381, 134);
-            this.chkEncryptPayload.Name = "chkEncryptPayload";
-            this.chkEncryptPayload.Size = new System.Drawing.Size(159, 17);
-            this.chkEncryptPayload.TabIndex = 23;
-            this.chkEncryptPayload.Text = global::VismutaGUI.Properties.Resources.frmMain_EncryptPayloadInteractive;
-            this.chkEncryptPayload.UseVisualStyleBackColor = true;
-            this.chkEncryptPayload.CheckedChanged += new System.EventHandler(this.chkEncryptPayload_CheckedChanged);
+            this.chkEncryptInteractive.AutoSize = true;
+            this.chkEncryptInteractive.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.chkEncryptInteractive.Location = new System.Drawing.Point(381, 134);
+            this.chkEncryptInteractive.Name = "chkEncryptInteractive";
+            this.chkEncryptInteractive.Size = new System.Drawing.Size(154, 17);
+            this.chkEncryptInteractive.TabIndex = 23;
+            this.chkEncryptInteractive.Text = "Use encryption (Interactive)";
+            this.chkEncryptInteractive.UseVisualStyleBackColor = true;
+            this.chkEncryptInteractive.CheckedChanged += new System.EventHandler(this.chkEncryptInteractive_CheckedChanged);
             // 
             // txtKeyphrase
             // 
@@ -251,7 +252,7 @@ namespace VismutaGUI
             this.txtRunFirst.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtRunFirst.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtRunFirst.ForeColor = System.Drawing.Color.White;
-            this.txtRunFirst.Location = new System.Drawing.Point(12, 186);
+            this.txtRunFirst.Location = new System.Drawing.Point(9, 202);
             this.txtRunFirst.Name = "txtRunFirst";
             this.txtRunFirst.Size = new System.Drawing.Size(500, 15);
             this.txtRunFirst.TabIndex = 26;
@@ -260,7 +261,7 @@ namespace VismutaGUI
             // lblRunFirst
             // 
             this.lblRunFirst.AutoSize = true;
-            this.lblRunFirst.Location = new System.Drawing.Point(12, 170);
+            this.lblRunFirst.Location = new System.Drawing.Point(9, 186);
             this.lblRunFirst.Name = "lblRunFirst";
             this.lblRunFirst.Size = new System.Drawing.Size(425, 13);
             this.lblRunFirst.TabIndex = 27;
@@ -272,7 +273,7 @@ namespace VismutaGUI
             // 
             this.pictureBox1.Image = global::VismutaGUI.Properties.Resources.vismutaicon;
             this.pictureBox1.InitialImage = null;
-            this.pictureBox1.Location = new System.Drawing.Point(518, 225);
+            this.pictureBox1.Location = new System.Drawing.Point(515, 241);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(171, 103);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -287,23 +288,36 @@ namespace VismutaGUI
             this.chkObfuscateVariables.Name = "chkObfuscateVariables";
             this.chkObfuscateVariables.Size = new System.Drawing.Size(174, 17);
             this.chkObfuscateVariables.TabIndex = 29;
-            this.chkObfuscateVariables.Text = Resources.frmMain_ObfuscateVariables;
+            this.chkObfuscateVariables.Text = global::VismutaGUI.Properties.Resources.frmMain_ObfuscateVariables;
             this.chkObfuscateVariables.UseVisualStyleBackColor = true;
             this.chkObfuscateVariables.CheckedChanged += new System.EventHandler(this.chkObfuscateVariables_CheckedChanged);
+            // 
+            // chkEncryptNonInteractive
+            // 
+            this.chkEncryptNonInteractive.AutoSize = true;
+            this.chkEncryptNonInteractive.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.chkEncryptNonInteractive.Location = new System.Drawing.Point(381, 157);
+            this.chkEncryptNonInteractive.Name = "chkEncryptNonInteractive";
+            this.chkEncryptNonInteractive.Size = new System.Drawing.Size(177, 17);
+            this.chkEncryptNonInteractive.TabIndex = 30;
+            this.chkEncryptNonInteractive.Text = "Use encryption (Non-Interactive)";
+            this.chkEncryptNonInteractive.UseVisualStyleBackColor = true;
+            this.chkEncryptNonInteractive.CheckedChanged += new System.EventHandler(this.chkEncryptNonInteractive_CheckedChanged);
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.ClientSize = new System.Drawing.Size(695, 364);
+            this.ClientSize = new System.Drawing.Size(695, 381);
+            this.Controls.Add(this.chkEncryptNonInteractive);
             this.Controls.Add(this.chkObfuscateVariables);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lblRunFirst);
             this.Controls.Add(this.txtRunFirst);
             this.Controls.Add(this.txtKeyphrase);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.chkEncryptPayload);
+            this.Controls.Add(this.chkEncryptInteractive);
             this.Controls.Add(this.chkObfuscateName);
             this.Controls.Add(this.chkInject);
             this.Controls.Add(this.chkExecAsSystem);
@@ -348,13 +362,14 @@ namespace VismutaGUI
         private System.Windows.Forms.CheckBox chkExecAsSystem;
         private System.Windows.Forms.CheckBox chkInject;
         private CheckBox chkObfuscateName;
-        private CheckBox chkEncryptPayload;
+        private CheckBox chkEncryptInteractive;
         private TextBox txtKeyphrase;
         private Label label2;
         private TextBox txtRunFirst;
         private Label lblRunFirst;
         private PictureBox pictureBox1;
         private CheckBox chkObfuscateVariables;
+        private CheckBox chkEncryptNonInteractive;
     }
 }
 

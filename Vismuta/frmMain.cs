@@ -108,7 +108,7 @@ namespace VismutaGUI
                         throw;
                     }
                     payloadName = Vismuta.GetRandomString(Vismuta.RandomFilenameLength, false);
-                    payloadExt = @"." + Vismuta.GetRandomString(3, true);
+                    payloadExt = @".zip";
                     payloadArgs = @"";
                 }
 
@@ -117,7 +117,7 @@ namespace VismutaGUI
                 if (deployFlags.HasFlag(DeployMethodFlags.ObfuscateVariables))
                     keyphraseVariable = @"$" + Vismuta.GetRandomString(8, false);
 
-                if (deployFlags.HasFlag(DeployMethodFlags.EncryptPayload))
+                if (deployFlags.HasFlag(DeployMethodFlags.EncryptInteractive))
                     txtRunFirst.Text = keyphraseVariable + @" = Read-Host -Prompt 'Enter Keyphrase' -AsSecureString;";
 
                 String dstShell = Vismuta.Muta(deployFlags, srcBinary, payloadName, payloadExt, payloadArgs, txtKeyphrase.Text, keyphraseVariable);
@@ -198,17 +198,19 @@ namespace VismutaGUI
                 lblUsage.ForeColor = Color.Black;
             }
             txtArgs.Enabled = deployFlags.HasFlag(DeployMethodFlags.RunAfterDeploy) && AreCurrentOptionsValid();
-            txtKeyphrase.Enabled = deployFlags.HasFlag(DeployMethodFlags.EncryptPayload);
-            txtRunFirst.Visible = deployFlags.HasFlag(DeployMethodFlags.EncryptPayload) && AreCurrentOptionsValid();
-            lblRunFirst.Visible = deployFlags.HasFlag(DeployMethodFlags.EncryptPayload) && AreCurrentOptionsValid();
+            txtKeyphrase.Enabled = deployFlags.HasFlag(DeployMethodFlags.EncryptInteractive) || deployFlags.HasFlag(DeployMethodFlags.EncryptNonInteractive);
+            txtRunFirst.Visible = deployFlags.HasFlag(DeployMethodFlags.EncryptInteractive) && AreCurrentOptionsValid();
+            lblRunFirst.Visible = deployFlags.HasFlag(DeployMethodFlags.EncryptInteractive) && AreCurrentOptionsValid();
 
             chkObfuscateName.Enabled = !deployFlags.HasFlag(DeployMethodFlags.Inject);
             chkExecAsSystem.Enabled = _selectedFiles == null && !deployFlags.HasFlag(DeployMethodFlags.Inject);
-            chkRunAfterDeploy.Enabled = _selectedFiles == null && !deployFlags.HasFlag(DeployMethodFlags.Inject); ;
+            chkRunAfterDeploy.Enabled = _selectedFiles == null && !deployFlags.HasFlag(DeployMethodFlags.Inject);
             chkInject.Enabled = !deployFlags.HasFlag(DeployMethodFlags.RunAfterDeploy)
                 && !deployFlags.HasFlag(DeployMethodFlags.PsExec)
                 && !deployFlags.HasFlag(DeployMethodFlags.ObfuscateName)
                 && _selectedFiles == null;
+            chkEncryptInteractive.Enabled = !chkEncryptNonInteractive.Checked;
+            chkEncryptNonInteractive.Enabled = !chkEncryptInteractive.Checked;
         }
 
         private Boolean AreCurrentOptionsValid()
@@ -216,7 +218,7 @@ namespace VismutaGUI
             DeployMethodFlags flags = GetCurrentFlags();
             if (_selectedFiles == null && txtSrcPath.Text == String.Empty)
                 return false;
-            if (txtKeyphrase.Text == "" && flags.HasFlag(DeployMethodFlags.EncryptPayload))
+            if (txtKeyphrase.Text == "" && (flags.HasFlag(DeployMethodFlags.EncryptInteractive) || flags.HasFlag(DeployMethodFlags.EncryptNonInteractive)))
                 return false;
             return Vismuta.IsValidDeployMethod(flags);
         }
@@ -232,9 +234,11 @@ namespace VismutaGUI
                 flags |= DeployMethodFlags.Inject;
             if(chkObfuscateName.Checked)
                 flags |= DeployMethodFlags.ObfuscateName;
-            if(chkEncryptPayload.Checked)
-                flags |= DeployMethodFlags.EncryptPayload;
-            if(chkObfuscateVariables.Checked)
+            if(chkEncryptInteractive.Checked)
+                flags |= DeployMethodFlags.EncryptInteractive;
+            if (chkEncryptNonInteractive.Checked)
+                flags |= DeployMethodFlags.EncryptNonInteractive;
+            if (chkObfuscateVariables.Checked)
                 flags |= DeployMethodFlags.ObfuscateVariables;
             if(_selectedFiles != null)
                 flags |= DeployMethodFlags.Deflate;
@@ -262,9 +266,9 @@ namespace VismutaGUI
             ValidateCurrentOptions();
         }
 
-        private void chkEncryptPayload_CheckedChanged(object sender, EventArgs e)
+        private void chkEncryptInteractive_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkEncryptPayload.Checked && txtKeyphrase.Text == "")
+            if (chkEncryptInteractive.Checked && txtKeyphrase.Text == "")
                 txtKeyphrase.Text = Vismuta.GetRandomString(24, false);
             ValidateCurrentOptions();
             
@@ -278,6 +282,12 @@ namespace VismutaGUI
         private void chkObfuscateVariables_CheckedChanged(object sender, EventArgs e)
         {
             ValidateCurrentOptions();
+        }
+
+        private void chkEncryptNonInteractive_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkEncryptNonInteractive.Checked && txtKeyphrase.Text == "")
+                txtKeyphrase.Text = Vismuta.GetRandomString(24, false);
         }
     }
 }

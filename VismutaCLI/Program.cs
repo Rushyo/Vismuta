@@ -35,8 +35,11 @@ namespace VismutaCLI
             [Option('x', "obfuscate", DefaultValue = false, HelpText="Obfuscate payload filename and variables")]
             public Boolean Obfuscate { get; set; }
 
-            [Option('k', "keyphrase", DefaultValue = null, HelpText = "Encryption keyphrase (enables AES256 encryption)")]
+            [Option('k', "keyphrase", DefaultValue = null, HelpText = "Encryption keyphrase (triggers interactive encryption)")]
             public String Keyphrase { get; set; }
+
+            [Option('e', "encrypt", DefaultValue=false, HelpText = "Use non-interactive encryption")]
+            public Boolean NonInteractiveEncryption { get; set; }
 
             [Option('l', "about", DefaultValue = false, HelpText = "Provides info about the application and licenses")]
             public Boolean ShowAbout { get; set; }
@@ -45,7 +48,7 @@ namespace VismutaCLI
             public String GetUsage()
             {
                 String usage = HelpText.AutoBuild(this, current => HelpText.DefaultParsingErrorsHandler(this, current));
-                usage += Environment.NewLine + Environment.NewLine + "When using encryption, you need to run the following code on the target system first:";
+                usage += Environment.NewLine + Environment.NewLine + "When using interactive encryption, you need to run the following code on the target system first:";
                 usage += Environment.NewLine + "$inputkey = Read-Host -Prompt 'Enter Keyphrase' -AsSecureString;";
                 return usage;
             }
@@ -84,7 +87,9 @@ namespace VismutaCLI
                     if (options.Obfuscate && !options.Inject)
                         flags |= DeployMethodFlags.ObfuscateName;
                     if (options.Keyphrase != null)
-                        flags |= DeployMethodFlags.EncryptPayload;
+                        flags |= DeployMethodFlags.EncryptInteractive;
+                    if(options.NonInteractiveEncryption)
+                        flags |= DeployMethodFlags.EncryptNonInteractive;
 
 
                     if(!Vismuta.IsValidDeployMethod(flags))
@@ -97,7 +102,7 @@ namespace VismutaCLI
                     Byte[] srcBinary = File.ReadAllBytes(options.PayloadPath);
                     String payloadName = Path.GetFileNameWithoutExtension(options.PayloadPath);
                     String payloadExt = Path.GetExtension(options.PayloadPath);
-                    String dstShell = Vismuta.Muta(flags, srcBinary, payloadName, payloadExt, options.PayloadArgs, options.Keyphrase, "$inputkey");
+                    String dstShell = Vismuta.Muta(flags, srcBinary, payloadName, payloadExt, options.PayloadArgs, options.Keyphrase ?? Vismuta.GetRandomString(24, false), "$inputkey");
                     if (String.IsNullOrWhiteSpace(options.OutputPath))
                     {
                         Console.WriteLine(dstShell);
@@ -113,7 +118,6 @@ namespace VismutaCLI
                 {
                     Console.WriteLine(Resources.Program_Main_PayloadPathRequired);
                     Console.WriteLine(options.GetUsage());
-                    return;
                 }
             }
         }

