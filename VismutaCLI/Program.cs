@@ -10,9 +10,9 @@ using VismutaLib;
 
 namespace VismutaCLI
 {
-    class Program
+    internal class Program
     {
-        class Options
+        private class Options
         {
             [Option('p', "payload", DefaultValue = null, HelpText = "Path to payload file", Required=true)]
             public String PayloadPath { get; set; }
