@@ -28,9 +28,9 @@ To write out a PowerShell script to deploy incognito.exe on the remote system:
 
 `./VismutaCLI -p incognito.exe > copyandpasteme.txt`
 
-To write out a PowerShell script to deploy and run incognito.exe as SYSTEM user, with obfuscated variables and filenames:
+To write out a PowerShell script to deploy and run incognito.exe as SYSTEM user, with obfuscated variables and filenames, encrypted with AEAD AES-256 to evade IDS:
 
-`./VismutaCLI -p incognito.exe -s -x > copyandpasteme.txt`
+`./VismutaCLI -p incognito.exe -s -x -e > copyandpasteme.txt`
 
 ### Usage Notes
 

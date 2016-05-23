@@ -20,7 +20,7 @@ namespace VismutaCLI
             [Option('o', "out", DefaultValue=null, HelpText = "File path to output to (if not specified, uses stdout)")]
             public String OutputPath { get; set; }
 
-            [Option('a', "args", DefaultValue = null, HelpText = "Arguments to run against payload once deployed")]
+            [Option('a', "args", DefaultValue = "", HelpText = "Arguments to run against payload once deployed")]
             public String PayloadArgs { get; set; }
 
             [Option('r', "run", DefaultValue=false, HelpText = "Run after deploy")]
