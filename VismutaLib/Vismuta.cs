@@ -33,7 +33,7 @@ namespace VismutaLib
             if(String.IsNullOrWhiteSpace(keyphraseVariable) && deployFlags.HasFlag(DeployMethodFlags.ObfuscateVariables))
                 throw new ArgumentException(nameof(keyphraseVariable));
 
-            String dstShell = "$cwd = (Get-Item -Path \".\\\" -Verbose).FullName;" + CRLF;
+            String dstShell = "[string] $cwd = (Get-Item -Path \".\\\" -Verbose).FullName;" + CRLF;
             String execName = GetRandomString(RandomFilenameLength, false);
             Byte[] execBinary = Convert.FromBase64String(Resources.ExecEncoded); //TODO: Take out redundant steps
 

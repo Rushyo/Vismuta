@@ -11,7 +11,7 @@ namespace VismutaTests
     {
         private const String CRLF = "\r\n";
         private const String TestString = @"ᚻᛖ ᚳᚹᚫᚦ ᚦᚫᛏ ᚻᛖ ᛒᚢᛞᛖ ᚩᚾ ᚦᚫᛗ ᛚᚪᚾᛞᛖ ᚾᚩᚱᚦᚹᛖᚪᚱᛞᚢᛗ ᚹᛁᚦ ᚦᚪ ᚹᛖᛥᚫ";
-        private const String SimpleShellText = "$cwd = (Get-Item -Path \".\\\" -Verbose).FullName;" + CRLF
+        private const String SimpleShellText = "[string] $cwd = (Get-Item -Path \".\\\" -Verbose).FullName;" + CRLF
     + "[string] $payloadEncoded = \"\";" + CRLF 
     + "$payloadEncoded += \"YQ==\";" + CRLF 
     + "[byte[]] $payload = [System.Convert]::FromBase64String($payloadEncoded);" + CRLF
@@ -51,9 +51,9 @@ namespace VismutaTests
         [TestMethod]
         public void ObfuscatePSVariables()
         {
-            Random random = new Random(1);
+            var random = new Random(1);
             String obfuscated = Vismuta.ObfuscatePSVariables(SimpleShellText, @"$inputKey", random);
-            const String expected = "$MFYoiWSx = (Get-Item -Path \".\\\" -Verbose).FullName;" + CRLF
+            const String expected = "[string] $MFYoiWSx = (Get-Item -Path \".\\\" -Verbose).FullName;" + CRLF
                               + "[string] $FhBMQzji = \"\";" + CRLF
                               + "$FhBMQzji += \"YQ==\";" + CRLF
                               + "[byte[]] $OfkkxEIT = [System.Convert]::FromBase64String($FhBMQzji);" + CRLF
