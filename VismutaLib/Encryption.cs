@@ -17,10 +17,6 @@ namespace VismutaLib
             , 0x18, 0x3b, 0x29, 0xb4, 0xcf, 0xdc, 0x3c, 0x86
         };
 
-        // WARNING: This should only ever be set via reflection for test purposes
-        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
-        private static Byte[] FixedIV { get; set; } = null;
-
         [Pure]
         public static Byte[] AES256Encrypt(Byte[] plaintext, String key)
         {
@@ -41,7 +37,7 @@ namespace VismutaLib
         [Pure]
         public static Byte[] AES256Encrypt(Byte[] plaintext, Byte[] key)
         {
-            Byte[] iv = new Byte[16];
+            var iv = new Byte[16];
             using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
                 rng.GetBytes(iv);
             return AES256Encrypt(plaintext, key, iv);

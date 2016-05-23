@@ -22,6 +22,7 @@ namespace VismutaGUI
 
         private String[] _selectedFiles;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Windows.Forms.FileDialog.set_Filter(System.String)")]
         private void cmdChooseSrc_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog dialog = new OpenFileDialog())
@@ -60,6 +61,8 @@ namespace VismutaGUI
             ValidateCurrentOptions();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters")]
         private void cmdMuta_Click(object sender, EventArgs e)
         {
             cmdMuta.Enabled = false;
@@ -171,6 +174,8 @@ namespace VismutaGUI
             ValidateCurrentOptions();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         private void cmdAbout_Click(object sender, EventArgs e)
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
@@ -216,9 +221,10 @@ namespace VismutaGUI
         private Boolean AreCurrentOptionsValid()
         {
             DeployMethodFlags flags = GetCurrentFlags();
-            if (_selectedFiles == null && txtSrcPath.Text == String.Empty)
+            if (_selectedFiles == null && String.IsNullOrWhiteSpace(txtSrcPath.Text))
                 return false;
-            if (txtKeyphrase.Text == "" && (flags.HasFlag(DeployMethodFlags.EncryptInteractive) || flags.HasFlag(DeployMethodFlags.EncryptNonInteractive)))
+            if (String.IsNullOrWhiteSpace(txtKeyphrase.Text)
+                && (flags.HasFlag(DeployMethodFlags.EncryptInteractive) || flags.HasFlag(DeployMethodFlags.EncryptNonInteractive)))
                 return false;
             return Vismuta.IsValidDeployMethod(flags);
         }
@@ -268,7 +274,7 @@ namespace VismutaGUI
 
         private void chkEncryptInteractive_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkEncryptInteractive.Checked && txtKeyphrase.Text == "")
+            if (chkEncryptInteractive.Checked && String.IsNullOrWhiteSpace(txtKeyphrase.Text))
                 txtKeyphrase.Text = Vismuta.GetRandomString(24, false);
             ValidateCurrentOptions();
             
@@ -286,7 +292,7 @@ namespace VismutaGUI
 
         private void chkEncryptNonInteractive_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkEncryptNonInteractive.Checked && txtKeyphrase.Text == "")
+            if (chkEncryptNonInteractive.Checked && String.IsNullOrWhiteSpace(txtKeyphrase.Text))
                 txtKeyphrase.Text = Vismuta.GetRandomString(24, false);
         }
     }
