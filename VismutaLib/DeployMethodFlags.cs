@@ -12,5 +12,6 @@ namespace VismutaLib
         , Inject = 1<<3
         , ObfuscateName = 1<<4
         , EncryptPayload = 1<<5
+        , ObfuscateVariables = 1<<6
     }
 }

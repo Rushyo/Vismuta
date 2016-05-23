@@ -187,4 +187,7 @@
   <data name="frmMain_EncryptPayloadNonInteractive" xml:space="preserve">
     <value>Encrypt payload (Non-Interactive)</value>
   </data>
+  <data name="frmMain_ObfuscateVariables" xml:space="preserve">
+    <value>Obfuscate PowerShell variables</value>
+  </data>
 </root>

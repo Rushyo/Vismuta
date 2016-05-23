@@ -187,6 +187,15 @@ namespace VismutaGUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Obfuscate PowerShell variables.
+        /// </summary>
+        internal static string frmMain_ObfuscateVariables {
+            get {
+                return ResourceManager.GetString("frmMain_ObfuscateVariables", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Output.
         /// </summary>
         internal static string frmMain_OutputLabel {

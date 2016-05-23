@@ -22,11 +22,15 @@ Vismuta, at its most basic, simply encodes your files in Base64 on your local sy
 
 It can also zip multiple files and automatically unzip them (presently GUI only), run a single file as SYSTEM automatically using a built-in copy of PSExec, or inject your code directly in to the memory of the PowerShell process to avoid touching disk (NOTE: experimental and VERY dangerous). You can even encrypt a payload, to avoid the payload being detected by a particular aggressive IDS.
 
-### Example
+### Examples
 
-To write out a PowerShell script to deploy and run incognito.exe as SYSTEM user, with an obfuscated filename:
+To write out a PowerShell script to deploy incognito.exe on the remote system:
 
-`VismutaCLI -p incognito.exe -s -x > copyandpasteme.txt`
+`./VismutaCLI -p incognito.exe > copyandpasteme.txt`
+
+To write out a PowerShell script to deploy and run incognito.exe as SYSTEM user, with obfuscated variables and filenames:
+
+`./VismutaCLI -p incognito.exe -s -x > copyandpasteme.txt`
 
 ### Usage Notes
 
@@ -68,8 +72,38 @@ Star it! This lets me know whether I should continue to work on it beyond my own
 
 ## Roadmap
 
-In the next version of Vismuta I hope to have AES256 (with HMACSHA512 EtM AEAD OMG WTF BBQ) payload encryption working. I also need to bring the CLI version in to parity with the GUI version, and clean up the zip UX path. I also need to add unit tests (!)
+I need to bring the CLI version in to parity with the GUI version, and clean up the zip UX path. The encryption deploy method ought to have a less secure but more UX friendly non-interactive mode. I also need to add unit tests (!)
 
 ## Disclaimer
 
 Vismuta is provided as is. If your use of it somehow sets fire to the family dog or shuts down a stock exchange, that's very much your own fault. If you do anything criminal with it, you're an idiot.
+
+## Flag Descriptions
+
+### Payloads Arguments (-a)
+
+Arguments to run against the payload, as though you were running it on the command line.
+
+### Run After Deploy (-r)
+
+After deploying the file to the target system, this runs the file via PowerShell.
+
+### Execute As SYSTEM (-s)
+
+Implies Run After Deploy. Deploys PSExec to the target directory alongside the payload and attempts to run the file in command prompt under "NT AUTHORITY\SYSTEM" permissions. If encryption is enabled, PSExec will also be encrypted.
+
+### Memory Injection (-i)
+
+Injects the payload directly in to the PowerShell instances memory. This is experimental, and will only work with shellcode that matches the target architecture of the PowerShell instance (x86 or x64). Precludes most other options, as there is no file to run.
+
+### Obfuscate Name (-x)
+
+Obfuscates the name of the file, turning incognito.exe in to something like fHtfiPdhE.exe, to frustrate automatic AV/IDS detection.
+
+### Obfuscate Variables (-x)
+
+Obfuscates PowerShell variable names to frustrate automatic AV/IDS detection.
+
+### Encrypt (Interactive) (-e)
+
+Encrypts the payload (and PSExec, if relevant) using AEAD AES-256. Potentially useful for AV/IDS evasion, or just keeping your payload secret from a nosey DFIR team. Requires the user to run a script to enter a keyphrase before running the main script. More security is offered by typing the keyphrase rather than copying it, as copying it to the target system's clipboard provides an easy opportunity for the keyphrase to be stolen.

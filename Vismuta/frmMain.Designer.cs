@@ -54,6 +54,7 @@ namespace VismutaGUI
             this.txtRunFirst = new System.Windows.Forms.TextBox();
             this.lblRunFirst = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.chkObfuscateVariables = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -218,7 +219,7 @@ namespace VismutaGUI
             // 
             this.chkEncryptPayload.AutoSize = true;
             this.chkEncryptPayload.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.chkEncryptPayload.Location = new System.Drawing.Point(381, 111);
+            this.chkEncryptPayload.Location = new System.Drawing.Point(381, 134);
             this.chkEncryptPayload.Name = "chkEncryptPayload";
             this.chkEncryptPayload.Size = new System.Drawing.Size(159, 17);
             this.chkEncryptPayload.TabIndex = 23;
@@ -278,12 +279,25 @@ namespace VismutaGUI
             this.pictureBox1.TabIndex = 28;
             this.pictureBox1.TabStop = false;
             // 
+            // chkObfuscateVariables
+            // 
+            this.chkObfuscateVariables.AutoSize = true;
+            this.chkObfuscateVariables.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.chkObfuscateVariables.Location = new System.Drawing.Point(381, 111);
+            this.chkObfuscateVariables.Name = "chkObfuscateVariables";
+            this.chkObfuscateVariables.Size = new System.Drawing.Size(174, 17);
+            this.chkObfuscateVariables.TabIndex = 29;
+            this.chkObfuscateVariables.Text = Resources.frmMain_ObfuscateVariables;
+            this.chkObfuscateVariables.UseVisualStyleBackColor = true;
+            this.chkObfuscateVariables.CheckedChanged += new System.EventHandler(this.chkObfuscateVariables_CheckedChanged);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
             this.ClientSize = new System.Drawing.Size(695, 364);
+            this.Controls.Add(this.chkObfuscateVariables);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lblRunFirst);
             this.Controls.Add(this.txtRunFirst);
@@ -340,6 +354,7 @@ namespace VismutaGUI
         private TextBox txtRunFirst;
         private Label lblRunFirst;
         private PictureBox pictureBox1;
+        private CheckBox chkObfuscateVariables;
     }
 }
 

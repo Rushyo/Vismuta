@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -20,6 +21,7 @@ namespace VismutaLib
         // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
         private static Byte[] FixedIV { get; set; } = null;
 
+        [Pure]
         public static Byte[] AES256Encrypt(Byte[] plaintext, String key)
         {
             if (String.IsNullOrWhiteSpace(key))
@@ -36,6 +38,7 @@ namespace VismutaLib
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage",
             "CA2202:Do not dispose objects multiple times")]
+        [Pure]
         public static Byte[] AES256Encrypt(Byte[] plaintext, Byte[] key)
         {
             if (key == null)

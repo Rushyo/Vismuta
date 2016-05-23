@@ -32,7 +32,7 @@ namespace VismutaCLI
             [Option('i', "inject", DefaultValue = false, HelpText = "Use memory injection (precludes use of -r and -s)")]
             public Boolean Inject { get; set; }
 
-            [Option('x', "obfuscate", DefaultValue = false, HelpText="Obfuscate payload filename")]
+            [Option('x', "obfuscate", DefaultValue = false, HelpText="Obfuscate payload filename and variables")]
             public Boolean Obfuscate { get; set; }
 
             [Option('k', "keyphrase", DefaultValue = null, HelpText = "Encryption keyphrase (enables AES256 encryption)")]
@@ -80,9 +80,12 @@ namespace VismutaCLI
                     if(options.Inject)
                         flags |= DeployMethodFlags.Inject;
                     if(options.Obfuscate)
+                        flags |= DeployMethodFlags.ObfuscateVariables;
+                    if (options.Obfuscate && !options.Inject)
                         flags |= DeployMethodFlags.ObfuscateName;
-                    if(options.Keyphrase != null)
+                    if (options.Keyphrase != null)
                         flags |= DeployMethodFlags.EncryptPayload;
+
 
                     if(!Vismuta.IsValidDeployMethod(flags))
                     { 
@@ -94,7 +97,7 @@ namespace VismutaCLI
                     Byte[] srcBinary = File.ReadAllBytes(options.PayloadPath);
                     String payloadName = Path.GetFileNameWithoutExtension(options.PayloadPath);
                     String payloadExt = Path.GetExtension(options.PayloadPath);
-                    String dstShell = Vismuta.Muta(flags, srcBinary, payloadName, payloadExt, options.PayloadArgs, options.Keyphrase);
+                    String dstShell = Vismuta.Muta(flags, srcBinary, payloadName, payloadExt, options.PayloadArgs, options.Keyphrase, "$inputkey");
                     if (String.IsNullOrWhiteSpace(options.OutputPath))
                     {
                         Console.WriteLine(dstShell);

