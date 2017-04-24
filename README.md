@@ -28,7 +28,7 @@ To write out a PowerShell script to deploy incognito.exe on the remote system:
 
 `./VismutaCLI -p incognito.exe > copyandpasteme.txt`
 
-To write out a PowerShell script to deploy and run incognito.exe as SYSTEM user, with obfuscated variables and filenames, encrypted with AEAD AES-256 to evade IDS:
+To write out a PowerShell script to deploy and run incognito.exe as SYSTEM user, with obfuscated variables and filenames, encrypted with AE AES-256 to evade IDS:
 
 `./VismutaCLI -p incognito.exe -s -x -e > copyandpasteme.txt`
 
@@ -106,8 +106,8 @@ Obfuscates PowerShell variable names to frustrate automatic AV/IDS detection.
 
 ### Encrypt (Interactive) (-k [key])
 
-Encrypts the payload (and PSExec, if relevant) using AEAD AES-256. Potentially useful for AV/IDS evasion, or just keeping your payload secret from a nosey DFIR team. Requires the user to run a script to enter a keyphrase before running the main script (see -h). More security is offered by typing the keyphrase rather than copying it, as copying it to the target system's clipboard provides an easy opportunity for the keyphrase to be stolen. Incompatible with non-interactive encryption.
+Encrypts the payload (and PSExec, if relevant) using AE AES-256. Potentially useful for AV/IDS evasion, or just keeping your payload secret from a nosey DFIR team. Requires the user to run a script to enter a keyphrase before running the main script (see -h). More security is offered by typing the keyphrase rather than copying it, as copying it to the target system's clipboard provides an easy opportunity for the keyphrase to be stolen. Incompatible with non-interactive encryption.
 
 ### Encrypt (Non-Interactive) (-e)
 
-Encrypts the payload (and PSExec, if relevant) using AEAD AES-256, however includes the key in plaintext within the script! Potentially useful for AV/IDS evasion, but offers little protection against a blue team. Incompatible with interactive encryption. Does not require any special interactions from the user (hence, y'know, being non-interactive).
+Encrypts the payload (and PSExec, if relevant) using AE AES-256, however includes the key in plaintext within the script! Potentially useful for AV/IDS evasion, but offers little protection against a blue team. Incompatible with interactive encryption. Does not require any special interactions from the user (hence, y'know, being non-interactive).
