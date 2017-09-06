@@ -8,7 +8,7 @@ Vismuta is a cross-platform* C# tool (both CLI and GUI) that allows you move (an
 
 ## Who?
 
-Vismuta is targeted towards penetration testers and sysadmins working with systems virtually/remotely on a regular basis.
+Vismuta is targeted towards penetration testers and sysadmins working with systems virtually/remotely on a regular basis. It has been proven in operational labs and in complex red team exercises.
 
 ## Why?
 
