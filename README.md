@@ -2,9 +2,7 @@
 
 ## What?
 
-Vismuta is a cross-platform* C# tool (both CLI and GUI) that allows you move (and execute files), from your local system, on a remote system simply by copying and pasting, if the remote system runs PowerShell.
-
-*In theory. The author is too lazy to have tried it yet.
+Vismuta is a cross-platform C# tool (both CLI and GUI) that allows you move (and execute files), from your local system, on a remote system simply by copying and pasting, if the remote system runs PowerShell.
 
 ## Who?
 
@@ -14,7 +12,7 @@ Vismuta is targeted towards penetration testers and sysadmins working with syste
 
 Virtual machines (VMWare, Hyper-V) and remote access tools (RDP, VNC, Citrix) often have access controls or limitations that prevent common techniques of copying files on to remote systems, such as drag-and-drop or file sharing. In addition, Intrusion Prevention Systems, firewalls, and other security systems can frustrate your ability to download files from networks when working with a remote machine.
 
-Vismuta bypasses all these limitations, requiring only the ability to copy and paste in to the shell or copy a text file from a site such as Dropbox or Pastebin. For penetration testers it can also deploy PSExec and will, where possible, run your payload with "NT AUTHORITY\SYSTEM" permissions. If you have a payload you want to inject in-memory (to avoid AV) you can do that too (experimental)! You can also move large quantities of files, which will be zipped and deflated on the target (presently GUI only).
+Vismuta bypasses all these limitations, requiring only the ability to copy and paste in to the shell or copy a text file from a site such as Dropbox or Pastebin. For penetration testers it can also deploy PSExec and will, where possible, run your payload with "NT AUTHORITY\SYSTEM" permissions. If you have a payload you want to inject in-memory (to avoid AV) you can do that too! You can also move large quantities of files, which will be zipped and deflated on the target (presently GUI only).
 
 ## How?
 
@@ -44,7 +42,7 @@ Vismuta is designed to work on any local system that supports .NET 4.5, includin
 
 Contributions are welcome. If I don't think your code meets my quirky coding standards I'll clean it up and let you know what I did, rather than rejecting it. If you want to add a feature sound me out first with a feature request, or fork it off. I can't guarantee it's necessarily something I'll want to add otherwise; I avert feature creep pathologically.
 
-Vismuta is internationalised. If you want to localise it for your language, you'll be doing me and, I hope, many other people a great service.
+Vismuta is internationalised. If you want to localise it for your language, just send me a PR.
 
 ### Compilation
 
