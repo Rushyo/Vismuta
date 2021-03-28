@@ -1,5 +1,8 @@
 # Vismuta
 
+![Supported](https://img.shields.io/badge/supported-yes%20(2021)-brightgreen)
+[![GitHub stars](https://img.shields.io/github/stars/Rushyo/VindicateTool.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/Rushyo/VindicateTool/stargazers/)
+
 ## What?
 
 Vismuta is a cross-platform C# tool (both CLI and GUI) that allows you move (and execute files), from your local system, on a remote system simply by copying and pasting, if the remote system runs PowerShell.
